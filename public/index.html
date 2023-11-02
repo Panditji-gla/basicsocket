@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How To Change Background Color With JavaScript</title>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        position: relative;
+    }
+
+    .wrapper input {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        -webkit-appearance: none;
+        width: 50px;
+        height: 50px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .content {
+        font-family: montserrat;
+        text-align: center;
+    }
+
+    .content h2 {
+        text-transform: uppercase;
+        font-size: 80px;
+    }
+
+    .content p {
+        font-size: 45px;
+    }
+</style>
+
+<body>
+    <div class="wrapper">
+        <div class="content" id="hello">
+            <h2>homepage</h2>
+            <p>Some Text Here</p>
+            <button type="button" id="clear">
+                <span class="sr-only">Clear</span>
+            </button>
+            <div id="ntftn"></div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let element = document.getElementById("ntftn");
+        var socket = io();
+        socket.on("connect", () => {
+            socket.on("rcv-notification", (msg) => {
+                element.innerHTML += `<div class="col-sm-12">
+        <div class="alert fade alert-simple alert-success alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show">
+          <i class="start-icon far fa-check-circle faa-tada animated"></i>
+          <strong class="font__weight-semibold">Some thing important for you!</strong> ${msg}
+        </div>
+      </div>`
+            })
+        });
+        let close = () => {
+            element.innerHTML = ``;
+        }
+        document.getElementById("clear").addEventListener("click", close);
+    </script>
+</body>
+
+</html>
